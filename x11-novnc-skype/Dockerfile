@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.18
+FROM phusion/baseimage:0.9.22
 
 # Set correct environment variables
 ENV HOME /root
@@ -6,24 +6,24 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
-ENV TZ=US/Pacific
+#ENV TZ=US/Pacific
 ENV SCREEN_RESOLUTION 1280x900
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Installing apps
-RUN apt-get update && apt-get -y install \
-	xvfb \
-	x11vnc \
-	supervisor \
-	fluxbox \
-	git-core \
-	git
-
-# Obtain Skype
-RUN curl -s 'https://repo.skype.com/latest/skypeforlinux-64.deb' -o /root/skype.deb && \
-	dpkg -i /root/skype.deb || true && \
-	apt-get install -fy && \
-	rm /root/skype.deb
+# install skypeforlinux
+RUN apt-get update && \
+	curl https://repo.skype.com/data/SKYPE-GPG-KEY | apt-key add - && \
+	echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | \
+		tee /etc/apt/sources.list.d/skypeforlinux.list && \
+	apt-get update && \
+	apt-get install -y skypeforlinux \
+		xvfb \
+        	x11vnc \
+        	supervisor \
+        	fluxbox \
+        	git-core \
+        	git \
+        	apt-transport-https
 
 # House cleaning
 RUN apt-get autoclean
