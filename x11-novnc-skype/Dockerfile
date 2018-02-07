@@ -16,7 +16,7 @@ RUN apt-get update && \
 	echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | \
 		tee /etc/apt/sources.list.d/skypeforlinux.list && \
 	apt-get update && \
-	apt-get install -y skypeforlinux=8.11.0.4 \
+	apt-get install -y skypeforlinux=8.15.0.4 \
 		xvfb \
         	x11vnc \
         	supervisor \
